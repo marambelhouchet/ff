@@ -2,7 +2,57 @@ import Head from "next/head";
 import React, { useEffect } from "react";
 
 export default function Home() {
-  // Keep the existing useEffect logic the same
+  useEffect(() => {
+    // Previous useEffect logic remains the same
+    let allResponses: any[] = [];
+    const storedResponses = localStorage.getItem("allResponses");
+    if (storedResponses) {
+      allResponses = JSON.parse(storedResponses);
+    }
+
+    const form = document.getElementById("questionnaireForm") as HTMLFormElement;
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const responseData = {
+        genre: (document.getElementById("genre") as HTMLSelectElement).value,
+        age: (document.getElementById("age") as HTMLInputElement).value,
+        annee: (document.getElementById("annee") as HTMLInputElement).value,
+        acces: (document.getElementById("acces") as HTMLSelectElement).value,
+        utilisation: (document.getElementById("utilisation") as HTMLTextAreaElement).value,
+        impact: (document.getElementById("impact") as HTMLTextAreaElement).value,
+        strategies: (document.getElementById("strategies") as HTMLTextAreaElement).value,
+        preoccupation: (document.getElementById("preoccupation") as HTMLSelectElement).value,
+        controle: (document.getElementById("controle") as HTMLSelectElement).value,
+        relations: (document.getElementById("relations") as HTMLSelectElement).value,
+      };
+
+      allResponses.push(responseData);
+      localStorage.setItem("allResponses", JSON.stringify(allResponses));
+      console.log("Current Submission:", responseData);
+      alert("Vos réponses ont été enregistrées !");
+      form.reset();
+    });
+
+    const showResponsesButton = document.getElementById("showResponsesButton");
+    showResponsesButton?.addEventListener("click", () => {
+      const username = prompt("Entrez le nom d'utilisateur :");
+      const password = prompt("Entrez le mot de passe :");
+
+      if (username === "admin" && password === "adminpass") {
+        const stored = localStorage.getItem("allResponses");
+        const responses = stored ? JSON.parse(stored) : [];
+        const responsesDiv = document.getElementById("responsesDisplay") as HTMLDivElement;
+        responsesDiv.style.display = "block";
+        responsesDiv.innerHTML =
+          "<h3>Réponses enregistrées :</h3><pre>" +
+          JSON.stringify(responses, null, 2) +
+          "</pre>";
+      } else {
+        alert("Identifiants incorrects !");
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -33,7 +83,142 @@ export default function Home() {
         </div>
 
         <form id="questionnaireForm">
-          {/* Form sections remain the same */}
+          {/* Section 1: Informations démographiques */}
+          <div className="section">
+            <h3>📝 Informations démographiques</h3>
+            
+            <div className="form-group">
+              <label htmlFor="genre">1. Genre :</label>
+              <select id="genre" name="genre" required>
+                <option value="">Sélectionnez votre genre</option>
+                <option value="Homme">Homme</option>
+                <option value="Femme">Femme</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="age">2. Âge :</label>
+              <input 
+                type="number" 
+                id="age" 
+                name="age" 
+                placeholder="Entrez votre âge" 
+                min="16" 
+                max="50" 
+                required 
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="annee">3. Année d'étude :</label>
+              <input
+                type="text"
+                id="annee"
+                name="annee"
+                placeholder="Ex: 3ème année"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="acces">4. Avez-vous accès à un ordinateur et à internet à domicile ?</label>
+              <select id="acces" name="acces" required>
+                <option value="">Sélectionnez une option</option>
+                <option value="Oui">Oui</option>
+                <option value="Non">Non</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Section 2: Utilisation des outils numériques */}
+          <div className="section">
+            <h3>💻 Utilisation des outils numériques</h3>
+            
+            <div className="form-group">
+              <label htmlFor="utilisation">
+                5. Décrivez votre utilisation des outils numériques dans votre formation académique :
+              </label>
+              <textarea
+                id="utilisation"
+                name="utilisation"
+                placeholder="Ex: Plateformes utilisées, fréquence d'utilisation..."
+                required
+              ></textarea>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="preoccupation">
+                6. Pensez-vous constamment à l'utilisation des outils numériques même lorsque vous ne les utilisez pas ?
+              </label>
+              <select id="preoccupation" name="preoccupation" required>
+                <option value="">Sélectionnez une option</option>
+                <option value="Toujours">Toujours</option>
+                <option value="Souvent">Souvent</option>
+                <option value="Parfois">Parfois</option>
+                <option value="Jamais">Jamais</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Section 3: Impact et gestion */}
+          <div className="section">
+            <h3>⏱️ Impact et gestion</h3>
+            
+            <div className="form-group">
+              <label htmlFor="impact">
+                7. Quel impact les outils numériques ont-ils sur votre santé mentale et votre gestion du temps ?
+              </label>
+              <textarea
+                id="impact"
+                name="impact"
+                placeholder="Décrivez les effets positifs et/ou négatifs..."
+                required
+              ></textarea>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="controle">
+                8. Avez-vous du mal à contrôler le temps passé sur les outils numériques ?
+              </label>
+              <select id="controle" name="controle" required>
+                <option value="">Sélectionnez une option</option>
+                <option value="Toujours">Toujours</option>
+                <option value="Souvent">Souvent</option>
+                <option value="Parfois">Parfois</option>
+                <option value="Jamais">Jamais</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Section 4: Stratégies et relations */}
+          <div className="section">
+            <h3>🤝 Relations et stratégies</h3>
+            
+            <div className="form-group">
+              <label htmlFor="relations">
+                9. L'utilisation des TIC a-t-elle affecté vos relations sociales ?
+              </label>
+              <select id="relations" name="relations" required>
+                <option value="">Sélectionnez une option</option>
+                <option value="Négativement">Négativement</option>
+                <option value="Positivement">Positivement</option>
+                <option value="Sans effet">Sans effet</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="strategies">
+                10. Quelles stratégies utilisez-vous pour gérer votre temps d'écran ?
+              </label>
+              <textarea
+                id="strategies"
+                name="strategies"
+                placeholder="Ex: Applications de suivi, planning..."
+                required
+              ></textarea>
+            </div>
+          </div>
 
           <button type="submit" className="submit-button">
             <span>Soumettre les réponses</span>
@@ -87,8 +272,6 @@ export default function Home() {
           font-weight: 700;
           color: var(--text);
           margin-bottom: 1rem;
-          position: relative;
-          display: inline-block;
         }
 
         .decorative-line {
@@ -136,12 +319,19 @@ export default function Home() {
           margin-bottom: 1.5rem;
           padding-bottom: 0.5rem;
           border-bottom: 2px solid #fce7f3;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .form-group {
+          margin-bottom: 1.5rem;
         }
 
         label {
           display: block;
           font-weight: 500;
-          margin: 1.5rem 0 0.75rem;
+          margin-bottom: 0.5rem;
           color: var(--text);
         }
 
@@ -179,6 +369,8 @@ export default function Home() {
           cursor: pointer;
           transition: all 0.2s ease;
           margin-top: 1.5rem;
+          width: 100%;
+          justify-content: center;
         }
 
         .submit-button:hover {
@@ -199,6 +391,8 @@ export default function Home() {
           font-weight: 500;
           margin-top: 2rem;
           transition: all 0.2s ease;
+          width: 100%;
+          justify-content: center;
         }
 
         .admin-button:hover {
@@ -212,6 +406,7 @@ export default function Home() {
           border-radius: 0.75rem;
           margin-top: 2rem;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+          display: none;
         }
 
         @media (max-width: 768px) {
