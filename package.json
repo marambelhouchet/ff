@@ -1,0 +1,32 @@
+{
+  "name": "t",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000t\u0000\r\u0000 \u0000#\u0000 \u0000t\u0000\r\u0000 \u0000#\u0000 \u0000t\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marambelhouchet/t.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marambelhouchet/t/issues"
+  },
+  "homepage": "https://github.com/marambelhouchet/t#readme",
+  "dependencies": {
+    "next": "^15.1.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.4",
+    "@types/react": "19.0.8",
+    "typescript": "5.7.3"
+  }
+}
