@@ -3,8 +3,12 @@ import React, { useEffect } from "react";
 
 export default function Home() {
   useEffect(() => {
-    // Global array to store all responses
-    const allResponses: any[] = [];
+    // On component mount, load saved responses from localStorage
+    let allResponses: any[] = [];
+    const storedResponses = localStorage.getItem("allResponses");
+    if (storedResponses) {
+      allResponses = JSON.parse(storedResponses);
+    }
 
     // Handle form submission
     const form = document.getElementById("questionnaireForm") as HTMLFormElement;
@@ -22,14 +26,15 @@ export default function Home() {
         strategies: (document.getElementById("strategies") as HTMLTextAreaElement).value,
       };
 
-      // Add the response to our global array
+      // Add the new response to the array
       allResponses.push(responseData);
 
-      // Log it to the console so you can see the stored data
+      // Save updated responses to localStorage
+      localStorage.setItem("allResponses", JSON.stringify(allResponses));
+
+      // Log and alert
       console.log("Current Submission:", responseData);
       console.log("All Submissions:", allResponses);
-
-      // Alert the user
       alert("Vos réponses ont été enregistrées dans un dictionnaire (voir la console).");
 
       // Optionally reset the form
@@ -44,12 +49,15 @@ export default function Home() {
 
       // Replace these with your actual credentials
       if (username === "admin" && password === "adminpass") {
+        // Load the stored responses from localStorage
+        const stored = localStorage.getItem("allResponses");
+        const responses = stored ? JSON.parse(stored) : [];
         // Display the stored responses
         const responsesDiv = document.getElementById("responsesDisplay") as HTMLDivElement;
         responsesDiv.style.display = "block";
         responsesDiv.innerHTML =
           "<h3>Contenu du dictionnaire :</h3><pre>" +
-          JSON.stringify(allResponses, null, 2) +
+          JSON.stringify(responses, null, 2) +
           "</pre>";
       } else {
         alert("Identifiants incorrects !");
@@ -62,7 +70,7 @@ export default function Home() {
       <Head>
         <title>Questionnaire - Cyberaddiction et TIC</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Import a clean font (Roboto) from Google Fonts */}
+        {/* Import Roboto font from Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -155,7 +163,7 @@ export default function Home() {
           margin: 0;
           padding: 0;
           font-family: "Roboto", sans-serif;
-          background-color: #f4f4f9;
+          background-color: #fff0f6; /* Light pink background */
         }
         body {
           max-width: 800px;
@@ -164,26 +172,26 @@ export default function Home() {
         }
         h2 {
           text-align: center;
-          color: #333;
+          color: #d81b60; /* Deep pink for heading */
           margin-bottom: 1rem;
         }
         .section {
           margin-bottom: 30px;
           padding: 20px;
-          background-color: #fff;
+          background-color: #ffeef8; /* Soft pink for sections */
           border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 8px rgba(216, 27, 96, 0.2);
         }
         .section h3 {
           margin-top: 0;
           margin-bottom: 0.75rem;
-          color: #333;
+          color: #c2185b; /* Medium pink for subheadings */
         }
         label {
           display: block;
           margin-top: 10px;
           font-weight: bold;
-          color: #555;
+          color: #ad1457; /* Dark pink for labels */
         }
         input[type="text"],
         input[type="number"],
@@ -193,7 +201,7 @@ export default function Home() {
           padding: 10px;
           margin: 10px 0;
           box-sizing: border-box;
-          border: 1px solid #ccc;
+          border: 1px solid #f48fb1; /* Light pink border */
           border-radius: 4px;
           font-size: 16px;
           font-family: inherit;
@@ -202,7 +210,7 @@ export default function Home() {
           resize: vertical;
         }
         button {
-          background-color: #4caf50;
+          background-color: #e91e63; /* Bright pink button */
           color: #fff;
           padding: 10px 20px;
           border: none;
@@ -213,13 +221,13 @@ export default function Home() {
           margin-bottom: 20px;
         }
         button:hover {
-          background-color: #45a049;
+          background-color: #d81b60; /* Darker pink on hover */
         }
         #responsesDisplay {
           margin-top: 20px;
-          border: 1px solid #ccc;
+          border: 1px solid #f48fb1;
           padding: 10px;
-          background-color: #fff;
+          background-color: #ffeef8;
           border-radius: 4px;
           white-space: pre-wrap;
           font-family: monospace;
